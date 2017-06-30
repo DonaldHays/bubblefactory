@@ -1,0 +1,10 @@
+{
+  "name" : "img2gb",
+  "description" : "converts images of different formats to data suitable for the Game Boy",
+  "version" : "0.0.0",
+  "main": "img2gb",
+  "dependencies": {
+    "commander" : "~2.9.0",
+    "pngjs" : "~3.2.0"
+  }
+}

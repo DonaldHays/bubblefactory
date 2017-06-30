@@ -1,0 +1,10 @@
+{
+  "name" : "ihx2gb",
+  "description" : "converts intel ihx files to game boy format",
+  "version" : "0.0.0",
+  "main": "ihx2gb",
+  "dependencies": {
+    "commander" : "~2.9.0",
+    "overflow-js": "~1.0.0"
+  }
+}

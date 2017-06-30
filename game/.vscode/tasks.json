@@ -1,0 +1,19 @@
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "0.1.0",
+  "command": "make",
+  "isShellCommand": true,
+  "args": ["-j8", "debug"],
+  "showOutput": "always",
+  "problemMatcher": {
+    "owner": "cpp",
+    "fileLocation": ["relative", "${workspaceRoot}"],
+    "pattern": {
+      "regexp": "^(.*):(\\d+):\\s+(.*)$",
+      "file": 1,
+      "line": 2,
+      "message": 3
+    }
+  }
+}

@@ -1,0 +1,7 @@
+node_modules
+sdcc/
+game/bin
+game/obj
+game/src/data_*
+
+.DS_Store

@@ -1,0 +1,8 @@
+{
+  "name" : "stringc",
+  "version" : "1.0.0",
+  "main": "stringc",
+  "dependencies" : {
+    "commander" : "~2.9.0"
+  }
+}
