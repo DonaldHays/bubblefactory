@@ -4,9 +4,10 @@ CFLAGS = -c -mgbz80
 ASMFLAGS = -plosgff
 LINKFLAGS = -mgbz80 --no-std-crt0 --data-loc 0xc0a0
 
-GFXS = tiles.png sprites.png
+GFXS = $(notdir $(shell find data/gfx -name '*.png'))
+GFXSRC = $(patsubst %.png,data_gfx_%.c,$(GFXS))
 ASMS = crt0.s
-SRCS = data_strings.c data_gfx_tiles.c data_gfx_font.c data_gfx_sprites.c data_gfx_logo.c main.c palette.c text.c menu_title.c menu_game.c map.c bcd.c gb.c sprites.c hero.c memory.c baddy.c rand.c bubbles.c game.c sound.c save.c
+SRCS := $(notdir $(shell find src -name '*.c')) $(GFXSRC) data_strings.c
 OBJS = $(SRCS:.c=.o)
 
 SRCFILES = $(patsubst %.c,src/%.c,$(SRCS))
