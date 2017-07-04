@@ -20,17 +20,8 @@ debug: build
 src/data_strings.c: data/strings.json 
 	node ../stringc data/stringsMap.json $< $@
 
-src/data_gfx_tiles.c: data/gfx/tiles.png
-	node ../img2gb $< $@
-	
-src/data_gfx_font.c: data/gfx/font.png
-	node ../img2gb -n font $< $@
-	
-src/data_gfx_sprites.c: data/gfx/sprites.png
-	node ../img2gb -n sprites $< $@
-	
-src/data_gfx_logo.c: data/gfx/logo.png
-	node ../img2gb -n logo $< $@
+src/data_gfx_%.c: data/gfx/%.png
+	node ../img2gb -n $(notdir $(basename $<)) $< $@
 
 obj/dependencies: $(SRCFILES)
 	@echo "regenerate dependency file"
