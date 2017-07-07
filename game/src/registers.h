@@ -12,6 +12,7 @@
 #define gbSRAM ((GBRegister)0xA000)
 
 #define gbSRAMEnableRegister ((GBRegister)0x0000)
+#define gbROMSelectRegister ((GBRegister)0x2000)
 #define gbLCDControlRegister ((GBRegister)0xFF40)
 #define gbLCDStatusRegister ((GBRegister)0xFF41)
 #define gbBackgroundScrollYRegister ((GBRegister)0xFF42)

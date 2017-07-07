@@ -3,6 +3,7 @@
 #include "data_gfx_font.h"
 
 void textLoadFont() {
+    gbROMBankSet(fontBank);
     memcpy(gbTileMemory, font, fontLength);
 }
 

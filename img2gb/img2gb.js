@@ -17,9 +17,13 @@ if(commander.args.length != 2) {
 const inputFilePath = path.resolve(commander.args[0]);
 const outputFilePath = path.resolve(commander.args[1]);
 
+const inputBasename = path.basename(inputFilePath);
+const metaFilePath = path.resolve(path.dirname(inputFilePath), inputBasename.substring(0, inputBasename.length - path.extname(inputBasename).length) + ".meta.json");
+
 const inBuffer = fs.readFileSync(inputFilePath);
 
 const inputExtension = path.extname(inputFilePath).toLowerCase();
+
 let bytes = null;
 if(inputExtension == ".png") {
   bytes = require("./png_parser")(inBuffer);
@@ -32,6 +36,15 @@ const outputExtension = path.extname(outputFilePath).toLowerCase();
 const outputOptions = {
   "name" : commander["name"]
 };
+
+if(fs.existsSync(metaFilePath)) {
+  const meta = JSON.parse(fs.readFileSync(metaFilePath));
+  
+  if(meta["bank"] !== undefined) {
+    outputOptions["bank"] = meta["bank"];
+  }
+}
+
 if(outputExtension == ".c") {
   require("./c_output")(outputFilePath, bytes, outputOptions);
 } else {

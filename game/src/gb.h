@@ -70,6 +70,8 @@ _gbMerge(counter, $): \
 #define gbWindowScrollSet(x, y) { *(gbWindowScrollXRegister) = (x); *(gbWindowScrollYRegister) = (y); }
 #define gbPaletteSet(register, black, dark, light, white) { *(register) = ((black) << 6) | ((dark) << 4) | ((light) << 2) | (white); }
 
+#define gbROMBankSet(bank) { *(gbROMSelectRegister) = bank; }
+
 #define gbSRAMEnable() { *(gbSRAMEnableRegister) = 0x0A; }
 #define gbSRAMDisable() { *(gbSRAMEnableRegister) = 0x00; }
 

@@ -37,6 +37,7 @@ void menuTitleInit() {
     textDrawString(stringWebAddress, stringWebAddressLength, 3, 15);
     textDrawString(stringTwitterHandle, stringTwitterHandleLength, 2, 16);
     
+    gbROMBankSet(logoBank);
     memcpy(gbTileMemory + 64 * 16, logo, logoLength);
     
     for(y = 0; y != 8; y++) {

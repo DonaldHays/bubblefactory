@@ -5,6 +5,8 @@ const path = require("path");
 const commander = require("commander");
 const Overflow = require("overflow-js").Overflow;
 
+const banks = [];
+
 function parseHexPair(string, index) {
   return parseInt(string.substr(index, 2), 16);
 }
@@ -120,23 +122,50 @@ function processMap(mapFilePath, symOutputPath) {
     return;
   }
   
-  const regex = /^[\s]+([0-9A-F]{8})  _([a-zA-Z0-9_]+)/;
+  const symbolRegex = /^[\s]+([0-9A-F]{8})  _([a-zA-Z0-9_]+)/;
+  const areaRegex = /^(_[A-Za-z_0-9]+)[\s]+([0-9A-F]{8})[\s]+([0-9A-F]{8})/;
   
   const text = fs.readFileSync(mapFilePath, "utf8");
   const lines = text.split(/[\n\r]+/g);
   const addresses = [];
   lines.forEach((line) => {
-    const match = regex.exec(line);
-    if(match == null) {
-      return;
+    const symbolMatch = symbolRegex.exec(line);
+    if(symbolMatch != null) {
+      const address = symbolMatch[1];
+      const symbol = symbolMatch[2];
+      
+      addresses.push({
+        "address" : address,
+        "symbol" : symbol
+      });
     }
-    const address = match[1];
-    const symbol = match[2];
     
-    addresses.push({
-      "address" : address,
-      "symbol" : symbol
-    });
+    const areaMatch = areaRegex.exec(line);
+    if(areaMatch != null) {
+      const name = areaMatch[1];
+      const address = areaMatch[2];
+      const size = areaMatch[3];
+      
+      if(name.indexOf("_CODE") == 0) {
+        const sizeNumber = parseInt(size, 16);
+        
+        if(sizeNumber > 16384) {
+          console.error(`error: area size overflow. ${name} is ${sizeNumber} bytes. Must be no larger than 16384. Bank moar.`);
+          process.exit(1);
+        }
+      }
+      
+      if(name.indexOf("_CODE_") == 0) {
+        const bank = {
+          "name" : name,
+          "address" : parseInt(address, 16),
+          "offset" : parseInt(address.substring(0, 4), 16) * 0x4000,
+          "size" : parseInt(size, 16)
+        };
+        
+        banks.push(bank);
+      }
+    }
   });
   
   const symbolLines = [
@@ -144,7 +173,7 @@ function processMap(mapFilePath, symOutputPath) {
     ""
   ];
   addresses.forEach((address) => {
-    symbolLines.push(`00:${address.address.substr(4)} ${address.symbol}`);
+    symbolLines.push(`${address.address.substr(2, 2)}:${address.address.substr(4)} ${address.symbol}`);
   });
   
   fs.writeFileSync(symOutputFilePath, symbolLines.join("\n"));
@@ -204,6 +233,10 @@ const gbBuffer = Buffer.alloc(32768 << commander.rom, 0xFF);
 
 let baseAddress = 0;
 
+let writingBank = false;
+let bankHead = 0;
+let bankIndex = -1;
+
 ihxRecords.forEach((record) => {
   let head = 0;
   
@@ -225,11 +258,31 @@ ihxRecords.forEach((record) => {
   
   if(type == 0) {
     // Data Record, copy bytes
+    
+    if(address >= 0x8000) {
+      console.error(`error: write address ${address} above ${0x8000}. wat.`);
+      process.exit(1);
+    }
+    
+    if(address >= 0x4000) {
+      if(writingBank == false || (writingBank == true && address <= bankHead)) {
+        writingBank = true;
+        bankHead = address;
+        bankIndex++;
+      }
+    } else {
+      writingBank = false;
+    }
+    
     for(let index = 0; index < dataLength; index++) {
       const byte = parseHexPair(record, head);
       head += 2;
       
-      gbBuffer[address + index] = byte;
+      if(writingBank) {
+        gbBuffer[banks[bankIndex].offset + (address - 0x4000) + index] = byte;
+      } else {
+        gbBuffer[address + index] = byte;
+      }
     }
   } else if(type == 1) {
     // EOF Record.

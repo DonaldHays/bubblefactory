@@ -170,6 +170,7 @@ void mapInit() {
         mapSetHighScore(saveNormalHighScore);
     }
     
+    gbROMBankSet(tilesBank);
     memcpy(gbTileMemory, tiles, tilesLength);
     
     tileMap0Address = gbTileMap0;

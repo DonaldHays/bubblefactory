@@ -13,6 +13,11 @@ function processHeader(filePath, bytes, options) {
   output.push(`#define image_${options["name"]}_h`);
   output.push("");
   
+  if(options["bank"] !== undefined) {
+    output.push(`#define ${options["name"]}Bank ${options["bank"]}`);
+    output.push("");
+  }
+  
   output.push(`/** Game Boy-format tile data. */`);
   output.push(`extern const unsigned char ${options["name"]}[];`);
   output.push("");
@@ -39,8 +44,13 @@ function processImplementation(filePath, bytes, options) {
   
   const fileName = path.basename(filePath);
   output.push(`#include "${fileName.substr(0, fileName.length - path.extname(fileName).length) + ".h"}"`);
-  
   output.push("");
+  
+  if(options["bank"] !== undefined) {
+    output.push(`#pragma bank ${options["bank"]}`);
+    output.push("");
+  }
+  
   output.push(`const unsigned char ${options["name"]}[] = {`);
   let index = 0;
   while(index < bytes.length) {

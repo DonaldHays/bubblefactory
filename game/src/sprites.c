@@ -27,6 +27,7 @@ void spritesInit() {
         spriteAttributes[index].attributes = spritesAttributesMake(0, 0, 0, 0);
     }
     
+    gbROMBankSet(spritesBank);
     memcpy(gbTileMemory + 128 * 16, sprites, spritesLength);
     
     tempAnimationCount = 25;
