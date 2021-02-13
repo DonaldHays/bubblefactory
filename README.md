@@ -11,12 +11,10 @@ The build pipeline has a dependency on [node.js](http://nodejs.org). You'll need
 ### Dependencies
 `cd` into `ihx2gb/` and run `npm install`.
 
-`cd` into `img2gb/` and run `npm install`.
-
 `cd` into `stringc/` and run `npm install`.
 
 Download [SDCC](http://sdcc.sourceforge.net) and place the `sdcc/` folder in the root directory alongside `ihx2gb/` and `img2gb/`, such that from the directory containing `ihx2gb/` you could navigate to `sdcc/bin/sdcc`.
-Also download [RGBDS](https://github.com/gbdev/rgbds/) and placeit in the `rgbds/` folder.
+Also download [RGBDS](https://github.com/gbdev/rgbds/) and place it in the `rgbds/` folder.
 
 Successfully tested with SDCC 4.0.0 and RGBGFX 0.4.2
 
