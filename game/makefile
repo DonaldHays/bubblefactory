@@ -1,5 +1,9 @@
-CC = ../sdcc/bin/sdcc
-ASMC = ../sdcc/bin/sdasgb
+SDCCBIN=../sdcc/bin/
+RGBDSDIR=../rgbds/
+CC = $(SDCCBIN)sdcc
+ASMC = $(SDCCBIN)sdasgb
+RGBGFX = $(RGBDSDIR)rgbgfx
+XXD = xxd
 CFLAGS = -c -mgbz80
 ASMFLAGS = -plosgff
 LINKFLAGS = -mgbz80 --no-std-crt0 --data-loc 0xc0a0
@@ -21,8 +25,23 @@ debug: build
 src/data_strings.c: data/strings.json 
 	node ../stringc data/stringsMap.json $< $@
 
-src/data_gfx_%.c: data/gfx/%.png
-	node ../img2gb -n $(notdir $(basename $<)) $< $@
+data/gfx/%.2bpp: data/gfx/%.png
+	$(RGBGFX) $^ -o $@
+
+src/data_gfx_%.h: data/gfx/%.2bpp
+	@echo "Generate $@"
+	@echo "#ifndef image_$*_h" > $@
+	@echo "#define image_$*_h" >> $@
+	@echo "extern const unsigned char $*[];" >> $@
+	@echo "#define $*Count ($$(($$(stat --printf="%s" "$^")/16)))" >> $@
+	@echo "#define $*Length ($$(stat --printf="%s" "$^"))" >> $@
+	@echo "#endif" >> $@
+
+src/data_gfx_%.c: data/gfx/%.2bpp src/data_gfx_%.h
+	@echo '#include "data_gfx_$*.h"' > $@
+	@echo "const unsigned char $*[] = {" >> $@
+	${XXD} -i < $< >> $@
+	@echo "};" >> $@
 
 obj/dependencies: $(SRCFILES)
 	@echo "regenerate dependency file"

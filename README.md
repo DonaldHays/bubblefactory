@@ -16,6 +16,13 @@ The build pipeline has a dependency on [node.js](http://nodejs.org). You'll need
 `cd` into `stringc/` and run `npm install`.
 
 Download [SDCC](http://sdcc.sourceforge.net) and place the `sdcc/` folder in the root directory alongside `ihx2gb/` and `img2gb/`, such that from the directory containing `ihx2gb/` you could navigate to `sdcc/bin/sdcc`.
+Also download [RGBDS](https://github.com/gbdev/rgbds/) and placeit in the `rgbds/` folder.
+
+Successfully tested with SDCC 4.0.0 and RGBGFX 0.4.2
+
+The makefile also relies on GNU coreutils and xxd being installed.
 
 ### Building the Game
 `cd` into `game/` and run `make` or `make debug`.
+
+If you have sdcc and rgbds globally installed you can also run `make -C game/ SDCCBIN= RGBDSDIR=`.
