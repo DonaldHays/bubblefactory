@@ -2,10 +2,12 @@ SDCCBIN=../sdcc/bin/
 RGBDSDIR=../rgbds/
 CC = $(SDCCBIN)sdcc
 ASMC = $(SDCCBIN)sdasgb
+MKROM = $(SDCCBIN)makebin
 RGBGFX = $(RGBDSDIR)rgbgfx
+RGBFIX = $(RGBDSDIR)rgbfix
 XXD = xxd
 CFLAGS = -c -mgbz80
-ASMFLAGS = -plosgff
+ASMFLAGS = -plosgffjw
 LINKFLAGS = -mgbz80 --no-std-crt0 --data-loc 0xc0a0
 
 GFXS = $(notdir $(shell find data/gfx -name '*.png'))
@@ -55,7 +57,11 @@ obj/dependencies: $(SRCFILES)
 
 bin/BubbleFactory.gb: obj/game.ihx
 	@mkdir -p bin
-	node ../ihx2gb --name BUBBLEFACT --licensee DH --cartridge 9 --ram 1 $< $@
+	#node ../ihx2gb --name BUBBLEFACT --licensee DH --cartridge 9 --ram 1 $< $@
+	# .sym should be available in sdcc 4.1.0 with -yS
+	$(MKROM) -Z -yn BUBBLEFACT -yt 9 -ya 1 $< $@
+	# should be available in sdcc 4.1.0 with -yk
+	$(RGBFIX) -k DH $@
 
 obj/game.ihx: $(OBJFILES)
 	@mkdir -p obj
@@ -70,6 +76,4 @@ obj/%.rel: src/%.s
 	$(ASMC) $(ASMFLAGS) $@ $<
 
 clean:
-	rm -rf src/data_*
-	rm -rf obj
-	rm -rf bin
+	rm -rf src/data_* data/gfx/*.2bpp obj bin
