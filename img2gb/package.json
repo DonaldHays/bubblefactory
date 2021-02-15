@@ -5,6 +5,6 @@
   "main": "img2gb",
   "dependencies": {
     "commander" : "~2.9.0",
-    "pngjs" : "~3.2.0"
+    "pngjs" : "~6.0.0"
   }
 }
