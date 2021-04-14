@@ -36,7 +36,7 @@ obj/dependencies: $(SRCFILES)
 
 bin/BubbleFactory.gb: obj/game.ihx
 	@mkdir -p bin
-	node ../ihx2gb --name BUBBLEFACT --licensee DH --cartridge 9 --ram 1 $< $@
+	node ../ihx2gb --name BUBBLEFACT --licensee DH --cartridge 0x1B --ram 1 --version 1 $< $@
 
 obj/game.ihx: $(OBJFILES)
 	@mkdir -p obj
