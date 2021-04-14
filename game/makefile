@@ -1,7 +1,7 @@
-CC = ../sdcc/bin/sdcc
-ASMC = ../sdcc/bin/sdasgb
+CC = sdcc
+ASMC = sdasgb
 CFLAGS = -c -mgbz80
-ASMFLAGS = -plosgff
+ASMFLAGS = -plosgffjw
 LINKFLAGS = -mgbz80 --no-std-crt0 --data-loc 0xc0a0
 
 GFXS = $(notdir $(shell find data/gfx -name '*.png'))
