@@ -18,6 +18,8 @@ GBUInt8 tempAnimationCount;
 void spritesInit() {
     GBUInt8 index;
     
+    memset(gbOAM, 0x00, 4 * 40);
+    
     spriteAttributes = (SpriteAttributes *)0xC000;
     
     for(index = 0; index != 40; index++) {

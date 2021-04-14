@@ -10,6 +10,7 @@
 #define gbTileMap0 ((GBRegister)0x9800)
 #define gbTileMap1 ((GBRegister)0x9C00)
 #define gbSRAM ((GBRegister)0xA000)
+#define gbOAM ((GBRegister)0xFE00)
 
 #define gbSRAMEnableRegister ((GBRegister)0x0000)
 #define gbLCDControlRegister ((GBRegister)0xFF40)
