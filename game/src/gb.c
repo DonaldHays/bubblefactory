@@ -23,7 +23,7 @@ void gbLCDDisable() {
     
     ; busy wait for vblank
 .lcdDisableLoop:
-    ld a, (#0xff44)
+    ldh a, (#0xff44)
     cp a, #144
     jr nz, .lcdDisableLoop
     
@@ -69,29 +69,40 @@ void gbJoypadStateUpdate() {
     
     push af
     push bc
+    ld c, #0
     
     ; Read first part of joypad state
     ld a, #0x20
-    ld (#0xff00), a
+    ldh (c), a
     
     ; Read several times to burn cycles waiting for register to update
-    ld a, (#0xff00)
-    ld a, (#0xff00)
+    ; `ldh a, (c); ldh a, (c)` same amount of clocks
+    ; as `ld a, (#0xff00)` but one byte less
+    ldh a, (c)
+    ldh a, (c)
+    ldh a, (c)
+    ldh a, (c)
     cpl ; Invert so 1=on and 0=off
     and #0x0f ; Only want 4 least significant bits
     ld b, a ; Store in b
     
     ; Read second part of joypad state
     ld a, #0x10
-    ld (#0xff00), a
+    ldh (c), a
     
     ; Read several times to burn cycles waiting for register to update
-    ld a, (#0xff00)
-    ld a, (#0xff00)
-    ld a, (#0xff00)
-    ld a, (#0xff00)
-    ld a, (#0xff00)
-    ld a, (#0xff00)
+    ldh a, (c)
+    ldh a, (c)
+    ldh a, (c)
+    ldh a, (c)
+    ldh a, (c)
+    ldh a, (c)
+    ldh a, (c)
+    ldh a, (c)
+    ldh a, (c)
+    ldh a, (c)
+    ldh a, (c)
+    ldh a, (c)
     
     cpl ; invert
     and #0x0f ; only 4 least significant bits
