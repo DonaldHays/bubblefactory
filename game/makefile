@@ -1,12 +1,15 @@
 SDCCBIN = 
 CC = $(SDCCBIN)sdcc
-ASMC = $(SDCCBIN)sdasgb
+AS = $(SDCCBIN)sdasgb
 MKROM = $(SDCCBIN)makebin
+# https://github.com/LIJI32/SameBoy or any other emulator
 EMU = sameboy
+# https://github.com/bbbbbr/romusage
+ROMUSE = romusage
 NODE = node
 CFLAGS = -c -msm83
-ASMFLAGS = -plosgffjw
-LINKFLAGS = -msm83 --no-std-crt0 --data-loc 0xc0a0
+ASFLAGS = -plosgffjw
+LDFLAGS = -msm83 --no-std-crt0 --data-loc 0xc0a0
 
 GFXS = $(notdir $(shell find data/gfx -name '*.png'))
 GFXSRC = $(patsubst %.png,data_gfx_%.c,$(GFXS))
@@ -17,11 +20,14 @@ OBJS = $(SRCS:.c=.o)
 SRCFILES = $(patsubst %.c,src/%.c,$(SRCS))
 OBJFILES = $(patsubst %.s,obj/%.rel,$(ASMS)) $(patsubst %.c,obj/%.rel,$(SRCS))
 
-.PHONY: build debug run clean
+ROM = BubbleFactory
 
-build: obj/dependencies bin/BubbleFactory.gb
+.PHONY: build debug run clean spaceleft statistics
 
-debug: CFLAGS += -DDEBUG
+build: obj/dependencies bin/$(ROM).gb
+
+debug: CFLAGS += -DDEBUG --debug
+debug: LDFLAGS += -Wl-y
 debug: build
 
 src/data_strings.c: data/strings.json 
@@ -39,23 +45,33 @@ obj/dependencies: $(SRCFILES) | obj/
 
 -include obj/dependencies
 
-bin/BubbleFactory.gb: obj/game.ihx | bin/
+bin/$(ROM).gb: obj/game.ihx | bin/
 	$(MKROM) -Z -yn BUBBLEFACT -yk DH -yt 0x1B -ya 1 -yS -yp0x014C=1 $< $@
+	cp obj/game.sym bin/$(ROM).sym
+	cp obj/game.noi bin/$(ROM).noi
+	test \! -s obj/game.cdb || cp obj/game.cdb bin/$(ROM).cdb
 
 obj/game.ihx: $(OBJFILES) | obj/
-	$(CC) $(LINKFLAGS) $^ -o $@
+	$(CC) $(LDFLAGS) $^ -o $@
 
 obj/%.rel: src/%.c | obj/
 	$(CC) $(CFLAGS) $< -o $@
 
 obj/%.rel: src/%.s | obj/
-	$(ASMC) $(ASMFLAGS) $@ $<
+	$(AS) $(ASFLAGS) $@ $<
 
 %/:
 	@mkdir -p $@
 
+spaceleft: build
+	$(ROMUSE) bin/$(ROM).noi -g -E
+
+statistics: build
+	test \! -s bin/$(ROM).cdb || $(ROMUSE) bin/$(ROM).cdb -g
+	$(ROMUSE) bin/$(ROM).noi -G -E -sH -a
+
 run: build
-	$(EMU) bin/BubbleFactory.gb
+	$(EMU) bin/$(ROM).gb
 
 clean:
 	$(RM) -rf src/data_*
