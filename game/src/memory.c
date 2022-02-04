@@ -4,7 +4,7 @@ volatile const void * memoryCopySourceAddress;
 volatile void * memoryCopyDestinationAddress;
 volatile GBUInt8 memoryCopyLength;
 
-void memoryCopy() __sdcccall(0) {
+void memoryCopy() {
     __asm
     
     push af

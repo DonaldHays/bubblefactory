@@ -16,7 +16,7 @@ GBJoypadState gbJoypadReleasedSinceLastUpdate;
 // ===
 // Public API
 // ===
-void gbLCDDisable() __sdcccall(0) {
+void gbLCDDisable() {
     __asm
     
     push af
@@ -36,28 +36,28 @@ void gbLCDDisable() __sdcccall(0) {
     __endasm;
 }
 
-void gbLCDEnable() __sdcccall(0) {
+void gbLCDEnable() {
     __asm
     ld hl, #0xff40
     set #7, (hl)
     __endasm;
 }
 
-void gbSpritesDisable() __sdcccall(0) {
+void gbSpritesDisable() {
     __asm
     ld hl, #0xff40
     res #1, (hl)
     __endasm;
 }
 
-void gbSpritesEnable() __sdcccall(0) {
+void gbSpritesEnable() {
     __asm
     ld hl, #0xff40
     set #1, (hl)
     __endasm;
 }
 
-void gbJoypadStateUpdate() __sdcccall(0) {
+void gbJoypadStateUpdate() {
     GBUInt8 lastValue;
     
     lastValue = gbJoypadState;

@@ -35,7 +35,7 @@ void spritesInit() {
     tempAnimationPhase = 0;
 }
 
-void spritesWriteToOAM() __sdcccall(0) {
+void spritesWriteToOAM() {
     __asm
     call #0xFF80
     __endasm;

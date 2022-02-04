@@ -38,7 +38,7 @@ extern volatile const SpriteFrameAttributes * spritesWriteAttributes;
 #define spritesAttributesMake(priority, flipX, flipY, paletteNumber) (((priority) << 7) | ((flipX) << 5) | ((flipY) << 6) | ((paletteNumber) << 4))
 
 void spritesInit();
-void spritesWriteToOAM() __sdcccall(0);
+void spritesWriteToOAM();
 void spritesWrite2x2();
 void spritesWrite1x1();
 
