@@ -1,6 +1,7 @@
-CC = sdcc
-ASMC = sdasgb
-MKROM = makebin
+SDCCBIN = 
+CC = $(SDCCBIN)sdcc
+ASMC = $(SDCCBIN)sdasgb
+MKROM = $(SDCCBIN)makebin
 EMU = sameboy
 NODE = node
 CFLAGS = -c -mgbz80

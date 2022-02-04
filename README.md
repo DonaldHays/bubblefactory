@@ -18,3 +18,10 @@ The build pipeline has dependencies on [node.js](http://nodejs.org) and [SDCC](h
 
 ### Building the Game and Dependencies
 Just run `make`, `make debug` or `make run` in the root folder.
+
+### Building with an SDCC Snapshot
+*This is for versions of SDCC that aren't installed*
+```
+SDCC_HOME=/path/to/sdcc/share/sdcc/
+make SDCCBIN=${SDCC_HOME}../../bin/
+```
