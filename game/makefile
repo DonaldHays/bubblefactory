@@ -49,7 +49,7 @@ bin/$(ROM).gb: obj/game.ihx | bin/
 	$(MKROM) -Z -yn BUBBLEFACT -yk DH -yt 0x1B -ya 1 -yS -yp0x014C=1 $< $@
 	cp obj/game.sym bin/$(ROM).sym
 	cp obj/game.noi bin/$(ROM).noi
-	test -e obj/game.cdb && cp obj/game.cdb bin/$(ROM).cdb
+	test \! -s obj/game.cdb || cp obj/game.cdb bin/$(ROM).cdb
 
 obj/game.ihx: $(OBJFILES) | obj/
 	$(CC) $(LDFLAGS) $^ -o $@
@@ -67,11 +67,11 @@ spaceleft: build
 	$(ROMUSE) bin/$(ROM).noi -g -E
 
 statistics: build
-	test -e bin/$(ROM).cdb && $(ROMUSE) bin/$(ROM).cdb -g
+	test \! -s bin/$(ROM).cdb || $(ROMUSE) bin/$(ROM).cdb -g
 	$(ROMUSE) bin/$(ROM).noi -G -E -sH -a
 
 run: build
-	$(EMU) $(ROM)
+	$(EMU) bin/$(ROM).gb
 
 clean:
 	$(RM) -rf src/data_*
