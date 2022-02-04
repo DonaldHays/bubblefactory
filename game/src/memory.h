@@ -7,6 +7,6 @@ extern volatile const void * memoryCopySourceAddress;
 extern volatile void * memoryCopyDestinationAddress;
 extern volatile GBUInt8 memoryCopyLength;
 
-void memoryCopy();
+void memoryCopy() __sdcccall(0);
 
 #endif

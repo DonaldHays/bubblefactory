@@ -79,15 +79,15 @@ extern GBJoypadState gbJoypadState;
 extern GBJoypadState gbJoypadPressedSinceLastUpdate;
 extern GBJoypadState gbJoypadReleasedSinceLastUpdate;
 
-void gbLCDDisable();
-void gbLCDEnable();
+void gbLCDDisable() __sdcccall(0);
+void gbLCDEnable() __sdcccall(0);
 
-void gbSpritesDisable();
-void gbSpritesEnable();
+void gbSpritesDisable() __sdcccall(0);
+void gbSpritesEnable() __sdcccall(0);
 
-void gbJoypadStateUpdate();
+void gbJoypadStateUpdate() __sdcccall(0);
 
-void gbLogUInt8(GBUInt8 value);
-void gbLogUInt16(GBUInt16 value);
+void gbLogUInt8(GBUInt8 value) __sdcccall(0);
+void gbLogUInt16(GBUInt16 value) __sdcccall(0);
 
 #endif /* gb_h */

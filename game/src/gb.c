@@ -16,7 +16,7 @@ GBJoypadState gbJoypadReleasedSinceLastUpdate;
 // ===
 // Public API
 // ===
-void gbLCDDisable() {
+void gbLCDDisable() __sdcccall(0) {
     __asm
     
     push af
@@ -36,28 +36,28 @@ void gbLCDDisable() {
     __endasm;
 }
 
-void gbLCDEnable() {
+void gbLCDEnable() __sdcccall(0) {
     __asm
     ld hl, #0xff40
     set #7, (hl)
     __endasm;
 }
 
-void gbSpritesDisable() {
+void gbSpritesDisable() __sdcccall(0) {
     __asm
     ld hl, #0xff40
     res #1, (hl)
     __endasm;
 }
 
-void gbSpritesEnable() {
+void gbSpritesEnable() __sdcccall(0) {
     __asm
     ld hl, #0xff40
     set #1, (hl)
     __endasm;
 }
 
-void gbJoypadStateUpdate() {
+void gbJoypadStateUpdate() __sdcccall(0) {
     GBUInt8 lastValue;
     
     lastValue = gbJoypadState;
@@ -109,7 +109,7 @@ void gbJoypadStateUpdate() {
     gbJoypadReleasedSinceLastUpdate = (gbJoypadState ^ lastValue) & lastValue;
 }
 
-void gbLogUInt8(GBUInt8 value) {
+void gbLogUInt8(GBUInt8 value) __sdcccall(0) {
     (void)(value); // Suppresses unused variable warning
     
     __asm
@@ -128,7 +128,7 @@ void gbLogUInt8(GBUInt8 value) {
     __endasm;
 }
 
-void gbLogUInt16(GBUInt16 value) {
+void gbLogUInt16(GBUInt16 value) __sdcccall(0) {
     (void)(value); // Suppresses unused variable warning
     
     __asm
