@@ -4,9 +4,9 @@ ASMC = $(SDCCBIN)sdasgb
 MKROM = $(SDCCBIN)makebin
 EMU = sameboy
 NODE = node
-CFLAGS = -c -mgbz80
+CFLAGS = -c -msm83
 ASMFLAGS = -plosgffjw
-LINKFLAGS = -mgbz80 --no-std-crt0 --data-loc 0xc0a0
+LINKFLAGS = -msm83 --no-std-crt0 --data-loc 0xc0a0
 
 GFXS = $(notdir $(shell find data/gfx -name '*.png'))
 GFXSRC = $(patsubst %.png,data_gfx_%.c,$(GFXS))
