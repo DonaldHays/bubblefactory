@@ -1,6 +1,8 @@
 CC = sdcc
 ASMC = sdasgb
 MKROM = makebin
+EMU = sameboy
+NODE = node
 CFLAGS = -c -mgbz80
 ASMFLAGS = -plosgffjw
 LINKFLAGS = -mgbz80 --no-std-crt0 --data-loc 0xc0a0
@@ -14,44 +16,47 @@ OBJS = $(SRCS:.c=.o)
 SRCFILES = $(patsubst %.c,src/%.c,$(SRCS))
 OBJFILES = $(patsubst %.s,obj/%.rel,$(ASMS)) $(patsubst %.c,obj/%.rel,$(SRCS))
 
+.PHONY: build debug run clean
+
 build: obj/dependencies bin/BubbleFactory.gb
 
 debug: CFLAGS += -DDEBUG
 debug: build
 
 src/data_strings.c: data/strings.json 
-	node ../stringc data/stringsMap.json $< $@
+	$(NODE) ../stringc data/stringsMap.json $< $@
 
 src/data_gfx_%.c: data/gfx/%.png
-	node ../img2gb -n $(notdir $(basename $<)) $< $@
+	$(NODE) ../img2gb -n $(notdir $(basename $<)) $< $@
 
-obj/dependencies: $(SRCFILES)
+obj/dependencies: $(SRCFILES) | obj/
 	@echo "regenerate dependency file"
-	@mkdir -p obj
-	@rm -f obj/dependencies
+	@$(RM) -f obj/dependencies
 	@for srcFile in $(SRCFILES) ; do \
 		{ printf "obj/"; $(CC) -MM $$srcFile; } >> obj/dependencies ; \
 	done
 
 -include obj/dependencies
 
-bin/BubbleFactory.gb: obj/game.ihx
-	@mkdir -p bin
+bin/BubbleFactory.gb: obj/game.ihx | bin/
 	$(MKROM) -Z -yn BUBBLEFACT -yk DH -yt 0x1B -ya 1 -yS -yp0x014C=1 $< $@
 
-obj/game.ihx: $(OBJFILES)
-	@mkdir -p obj
+obj/game.ihx: $(OBJFILES) | obj/
 	$(CC) $(LINKFLAGS) $^ -o $@
 
-obj/%.rel: src/%.c
-	@mkdir -p obj
+obj/%.rel: src/%.c | obj/
 	$(CC) $(CFLAGS) $< -o $@
 
-obj/%.rel: src/%.s
-	@mkdir -p obj
+obj/%.rel: src/%.s | obj/
 	$(ASMC) $(ASMFLAGS) $@ $<
 
+%/:
+	@mkdir -p $@
+
+run: build
+	$(EMU) bin/BubbleFactory.gb
+
 clean:
-	rm -rf src/data_*
-	rm -rf obj
-	rm -rf bin
+	$(RM) -rf src/data_*
+	$(RM) -rf obj
+	$(RM) -rf bin

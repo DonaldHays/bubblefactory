@@ -9,11 +9,12 @@ I built this project on macOS. The instructions should be pretty easy to follow 
 The build pipeline has dependencies on [node.js](http://nodejs.org) and [SDCC](http://sdcc.sourceforge.net). You'll need to install them.
 
 ### Dependencies
-`cd` into `ihx2gb/` and run `npm install`.
-
 `cd` into `img2gb/` and run `npm install`.
 
 `cd` into `stringc/` and run `npm install`.
 
 ### Building the Game
 `cd` into `game/` and run `make` or `make debug`.
+
+### Building the Game and Dependencies
+Just run `make`, `make debug` or `make run` in the root folder.
