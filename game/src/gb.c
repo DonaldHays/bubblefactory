@@ -23,7 +23,7 @@ void gbLCDDisable() {
     
     ; busy wait for vblank
 .lcdDisableLoop:
-    ld a, (#0xff44)
+    ldh a, (#0xff44)
     cp a, #144
     jr nz, .lcdDisableLoop
     
@@ -69,29 +69,40 @@ void gbJoypadStateUpdate() {
     
     push af
     push bc
+    ld c, #0
     
     ; Read first part of joypad state
     ld a, #0x20
-    ld (#0xff00), a
+    ldh (c), a
     
     ; Read several times to burn cycles waiting for register to update
-    ld a, (#0xff00)
-    ld a, (#0xff00)
+    ; `ldh a, (c); ldh a, (c)` same amount of clocks
+    ; as `ld a, (#0xff00)` but one byte less
+    ldh a, (c)
+    ldh a, (c)
+    ldh a, (c)
+    ldh a, (c)
     cpl ; Invert so 1=on and 0=off
     and #0x0f ; Only want 4 least significant bits
     ld b, a ; Store in b
     
     ; Read second part of joypad state
     ld a, #0x10
-    ld (#0xff00), a
+    ldh (c), a
     
     ; Read several times to burn cycles waiting for register to update
-    ld a, (#0xff00)
-    ld a, (#0xff00)
-    ld a, (#0xff00)
-    ld a, (#0xff00)
-    ld a, (#0xff00)
-    ld a, (#0xff00)
+    ldh a, (c)
+    ldh a, (c)
+    ldh a, (c)
+    ldh a, (c)
+    ldh a, (c)
+    ldh a, (c)
+    ldh a, (c)
+    ldh a, (c)
+    ldh a, (c)
+    ldh a, (c)
+    ldh a, (c)
+    ldh a, (c)
     
     cpl ; invert
     and #0x0f ; only 4 least significant bits
@@ -109,44 +120,30 @@ void gbJoypadStateUpdate() {
     gbJoypadReleasedSinceLastUpdate = (gbJoypadState ^ lastValue) & lastValue;
 }
 
+// 8bit in a
 void gbLogUInt8(GBUInt8 value) {
     (void)(value); // Suppresses unused variable warning
     
     __asm
-    push af
-    push hl
-    ldhl sp, #3
-    ld a, (hl)
     ld d, d
     jr .gbLogUInt8End
     .dw 0x6464
     .dw 0x0000
     .strz "0x%a%"
 .gbLogUInt8End:
-    pop hl
-    pop af
     __endasm;
 }
 
+// 16bit in de
 void gbLogUInt16(GBUInt16 value) {
     (void)(value); // Suppresses unused variable warning
     
     __asm
-    push af
-    push bc
-    push hl
-    ldhl sp, #8
-    ld a, (hl+)
-    ld c, a
-    ld b, (hl)
     ld d, d
     jr .gbLogUInt16End
     .dw 0x6464
     .dw 0x0000
-    .strz "0x%bc%"
+    .strz "0x%de%"
 .gbLogUInt16End:
-    pop hl
-    pop bc
-    pop af
     __endasm;
 }

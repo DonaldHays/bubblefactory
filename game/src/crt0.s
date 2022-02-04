@@ -61,24 +61,22 @@
     ld sp, #0xE000
     
     ; initialize gamepad to 0
-    ld a, #0
+    xor a
     ld (_gbJoypadState), a
     
     ; install dma handler
     ld c, #(.endOAMDMA - .oamDMA)
     ld de, #0xFF80
     ld hl, #.oamDMA
+
+    ; c is never 0
 .installOAMDMALoop:
-    ld a, c
-    or a
-    jr z, .endInstallOAMDMALoop
-    
     ld a, (hl+)
     ld (de), a
     inc de
     
     dec c
-    jr .installOAMDMALoop
+    jr nz, .installOAMDMALoop
 .endInstallOAMDMALoop:
     
     call _main

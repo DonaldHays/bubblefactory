@@ -3,10 +3,8 @@
 
 #include "gb.h"
 
-extern volatile const void * memoryCopySourceAddress;
-extern volatile void * memoryCopyDestinationAddress;
 extern volatile GBUInt8 memoryCopyLength;
 
-void memoryCopy();
+void memoryCopy(void * dest, const void * src);
 
 #endif
