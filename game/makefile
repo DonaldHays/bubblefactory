@@ -1,5 +1,6 @@
 CC = sdcc
 ASMC = sdasgb
+MKROM = makebin
 CFLAGS = -c -mgbz80
 ASMFLAGS = -plosgffjw
 LINKFLAGS = -mgbz80 --no-std-crt0 --data-loc 0xc0a0
@@ -36,7 +37,7 @@ obj/dependencies: $(SRCFILES)
 
 bin/BubbleFactory.gb: obj/game.ihx
 	@mkdir -p bin
-	node ../ihx2gb --name BUBBLEFACT --licensee DH --cartridge 0x1B --ram 1 --version 1 $< $@
+	$(MKROM) -Z -yn BUBBLEFACT -yk DH -yt 0x1B -ya 1 -yS -yp0x014C=1 $< $@
 
 obj/game.ihx: $(OBJFILES)
 	@mkdir -p obj
