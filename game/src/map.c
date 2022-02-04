@@ -225,13 +225,9 @@ void mapUpdateGraphics() {
         _needsToRedrawHighScore = false;
         
         memoryCopyLength = 4;
-        memoryCopyDestinationAddress = gbTileMap0;
-        memoryCopySourceAddress = _highScoreMap[0];
-        memoryCopy();
-        
-        memoryCopyDestinationAddress = gbTileMap0 + 32;
-        memoryCopySourceAddress = _highScoreMap[1];
-        memoryCopy();
+        memoryCopy(gbTileMap0, _highScoreMap[0]);
+
+        memoryCopy(gbTileMap0 + 32, _highScoreMap[1]);
         
         return;
     }
@@ -240,13 +236,9 @@ void mapUpdateGraphics() {
         _needsToRedrawScore = false;
         
         memoryCopyLength = 4;
-        memoryCopyDestinationAddress = gbTileMap0 + 16;
-        memoryCopySourceAddress = _scoreMap[0];
-        memoryCopy();
-        
-        memoryCopyDestinationAddress = gbTileMap0 + 48;
-        memoryCopySourceAddress = _scoreMap[1];
-        memoryCopy();
+        memoryCopy(gbTileMap0 + 16, _scoreMap[0]);
+
+        memoryCopy(gbTileMap0 + 48, _scoreMap[1]);
         
         return;
     }
@@ -303,13 +295,9 @@ void mapUpdateGraphics() {
         if(_mapAnimationTickTime & 2) {
             // Top Left
             memoryCopyLength = 8;
-            memoryCopyDestinationAddress = gbTileMap0 + 67;
-            memoryCopySourceAddress = tileAnimations1[_mapAnimationCycle];
-            memoryCopy();
-            
-            memoryCopyDestinationAddress = gbTileMap0 + 99;
-            memoryCopySourceAddress = tileAnimations2[_mapAnimationCycle];
-            memoryCopy();
+            memoryCopy(gbTileMap0 + 67, tileAnimations1[_mapAnimationCycle]);
+
+            memoryCopy(gbTileMap0 + 99, tileAnimations2[_mapAnimationCycle]);
             
             if(bubblesIsTopInDanger()) {
                 if((_mapAnimationCycle & 1) == 0) {
@@ -328,35 +316,23 @@ void mapUpdateGraphics() {
         } else {
             // Top Right
             memoryCopyLength = 6;
-            memoryCopyDestinationAddress = gbTileMap0 + 75;
-            memoryCopySourceAddress = tileAnimations1[_mapAnimationCycle] + 8;
-            memoryCopy();
-            
-            memoryCopyDestinationAddress = gbTileMap0 + 107;
-            memoryCopySourceAddress = tileAnimations2[_mapAnimationCycle] + 8;
-            memoryCopy();
+            memoryCopy(gbTileMap0 + 75, tileAnimations1[_mapAnimationCycle] + 8);
+
+            memoryCopy(gbTileMap0 + 107, tileAnimations2[_mapAnimationCycle] + 8);
         }
     } else {
         if(_mapAnimationTickTime & 2) {
             // Bottom Left
             memoryCopyLength = 8;
-            memoryCopyDestinationAddress = gbTileMap0 + 451;
-            memoryCopySourceAddress = tileAnimations3[_mapAnimationCycle];
-            memoryCopy();
+            memoryCopy(gbTileMap0 + 451, tileAnimations3[_mapAnimationCycle]);
             
-            memoryCopyDestinationAddress = gbTileMap0 + 483;
-            memoryCopySourceAddress = tileAnimations4[_mapAnimationCycle];
-            memoryCopy();
+            memoryCopy(gbTileMap0 + 483, tileAnimations4[_mapAnimationCycle]);
         } else {
             // Bottom Right
             memoryCopyLength = 6;
-            memoryCopyDestinationAddress = gbTileMap0 + 459;
-            memoryCopySourceAddress = tileAnimations3[_mapAnimationCycle] + 8;
-            memoryCopy();
+            memoryCopy(gbTileMap0 + 459, tileAnimations3[_mapAnimationCycle] + 8);
             
-            memoryCopyDestinationAddress = gbTileMap0 + 491;
-            memoryCopySourceAddress = tileAnimations4[_mapAnimationCycle] + 8;
-            memoryCopy();
+            memoryCopy(gbTileMap0 + 491, tileAnimations4[_mapAnimationCycle] + 8);
             
             if(bubblesIsBottomInDanger()) {
                 if((_mapAnimationCycle & 1) == 0) {

@@ -109,44 +109,30 @@ void gbJoypadStateUpdate() {
     gbJoypadReleasedSinceLastUpdate = (gbJoypadState ^ lastValue) & lastValue;
 }
 
-void gbLogUInt8(GBUInt8 value) __sdcccall(0) {
+// 8bit in a
+void gbLogUInt8(GBUInt8 value) {
     (void)(value); // Suppresses unused variable warning
     
     __asm
-    push af
-    push hl
-    ldhl sp, #3
-    ld a, (hl)
     ld d, d
     jr .gbLogUInt8End
     .dw 0x6464
     .dw 0x0000
     .strz "0x%a%"
 .gbLogUInt8End:
-    pop hl
-    pop af
     __endasm;
 }
 
-void gbLogUInt16(GBUInt16 value) __sdcccall(0) {
+// 16bit in de
+void gbLogUInt16(GBUInt16 value) {
     (void)(value); // Suppresses unused variable warning
     
     __asm
-    push af
-    push bc
-    push hl
-    ldhl sp, #8
-    ld a, (hl+)
-    ld c, a
-    ld b, (hl)
     ld d, d
     jr .gbLogUInt16End
     .dw 0x6464
     .dw 0x0000
-    .strz "0x%bc%"
+    .strz "0x%de%"
 .gbLogUInt16End:
-    pop hl
-    pop bc
-    pop af
     __endasm;
 }

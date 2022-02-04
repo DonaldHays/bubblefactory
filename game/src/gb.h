@@ -87,7 +87,7 @@ void gbSpritesEnable();
 
 void gbJoypadStateUpdate();
 
-void gbLogUInt8(GBUInt8 value) __sdcccall(0);
-void gbLogUInt16(GBUInt16 value) __sdcccall(0);
+void gbLogUInt8(GBUInt8 value);
+void gbLogUInt16(GBUInt16 value);
 
 #endif /* gb_h */
