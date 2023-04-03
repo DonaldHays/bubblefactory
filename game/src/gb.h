@@ -48,13 +48,13 @@ _gbMerge(counter, $): \
 /** Triggers a source-code breakpoint in supported emulators. */
 #define gbBreak() { __asm__("ld b, b"); }
 #define gbLog(message) _gbLog(message, __COUNTER__)
-#define gbFatalError(message) {\
-    gbLog("ERROR:") \
-    gbLog(__FILE__) \
-    gbLog(_gbStr(__LINE__)) \
-    gbLog(message) \
-    gbBreak() \
-}
+#define gbFatalError(message) {}
+//     gbLog("ERROR:") 
+//     gbLog(__FILE__) 
+//     gbLog(_gbStr(__LINE__)) 
+//     gbLog(message) 
+//     gbBreak() 
+// }
 
 #ifdef DEBUG
     #define gbAssert(expression, message) {\

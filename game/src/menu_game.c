@@ -42,9 +42,9 @@ void _menuGameWriteStars(GBUInt16 score, GBUInt8 y) {
     
     numberOfStarsWritten = 0;
     
-    while(score >= 200 && numberOfStarsWritten != 5) {
-        *(gbTileMap0 + 14 + numberOfStarsWritten + (y * 32)) = 0x3F;
+    while(numberOfStarsWritten != 5) {
         score -= 200;
+        *(gbTileMap0 + 14 + numberOfStarsWritten + (y * 32)) = (score <= 0x7FFF ? 0x3F : 0x3E);
         numberOfStarsWritten++;
     }
 }

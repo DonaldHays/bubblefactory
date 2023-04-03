@@ -33,9 +33,8 @@ void menuTitleInit() {
     
     textLoadFont();
     textClearScreen();
-    textDrawString(stringPressStart, stringPressStartLength, 5, 12);
-    textDrawString(stringWebAddress, stringWebAddressLength, 3, 15);
-    textDrawString(stringTwitterHandle, stringTwitterHandleLength, 2, 16);
+    textDrawString(stringPressStart, stringPressStartLength, 4, 12);
+    textDrawString(stringWebAddress, stringWebAddressLength, 3, 16);
     
     memcpy(gbTileMemory + 64 * 16, logo, logoLength);
     

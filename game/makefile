@@ -1,8 +1,12 @@
 CC = sdcc
 ASMC = sdasgb
-CFLAGS = -c -mgbz80
+MAKEBIN = makebin
+
+CFLAGS = -c -msm83
 ASMFLAGS = -plosgffjw
-LINKFLAGS = -mgbz80 --no-std-crt0 --data-loc 0xc0a0
+LINKFLAGS = -msm83 --no-std-crt0 --data-loc 0xc0a0
+
+MAKEBINFLAGS = -Z -ya 1 -yt 0x1B -yk DH -yn BUBBLEFACT -yS -yj -yp 0x014C=2
 
 GFXS = $(notdir $(shell find data/gfx -name '*.png'))
 GFXSRC = $(patsubst %.png,data_gfx_%.c,$(GFXS))
@@ -36,7 +40,8 @@ obj/dependencies: $(SRCFILES)
 
 bin/BubbleFactory.gb: obj/game.ihx
 	@mkdir -p bin
-	node ../ihx2gb --name BUBBLEFACT --licensee DH --cartridge 0x1B --ram 1 --version 1 $< $@
+	$(MAKEBIN) $(MAKEBINFLAGS) $< $@
+	cp obj/game.sym bin/BubbleFactory.sym
 
 obj/game.ihx: $(OBJFILES)
 	@mkdir -p obj

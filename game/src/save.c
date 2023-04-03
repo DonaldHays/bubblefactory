@@ -20,7 +20,7 @@ GBUInt16 saveHardHighScore;
 void saveInit() {
     gbSRAMEnable();
     if(memcmp(sramMagicIdentifier, "save", 4) != 0) {
-        gbLog("battery corrupt, writing initial save ...");
+        // gbLog("battery corrupt, writing initial save ...");
         
         memcpy(sramMagicIdentifier, "save", 4);
         sramNormalHighScore = 0;

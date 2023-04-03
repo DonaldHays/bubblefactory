@@ -49,6 +49,12 @@ const SpriteFrameAttributes baddySpriteFrames[][4] = {
     
     // Heart
     {{0xAC, spritesAttributesMake(0, 0, 0, 0)}, {0xAD, spritesAttributesMake(0, 0, 0, 0)}, {0xBC, spritesAttributesMake(0, 0, 0, 0)}, {0xBD, spritesAttributesMake(0, 0, 0, 0)}},
+    
+    // Alert Left
+    {{0xCC, spritesAttributesMake(0, 0, 0, 0)}, {0xCD, spritesAttributesMake(0, 0, 0, 0)}, {0xDC, spritesAttributesMake(0, 0, 0, 0)}, {0xDD, spritesAttributesMake(0, 0, 0, 0)}},
+    
+    // Alert Right
+    {{0xCD, spritesAttributesMake(0, 1, 0, 0)}, {0xCC, spritesAttributesMake(0, 1, 0, 0)}, {0xDD, spritesAttributesMake(0, 1, 0, 0)}, {0xDC, spritesAttributesMake(0, 1, 0, 0)}},
 };
 
 // ===
@@ -184,6 +190,19 @@ void _updateBaddies() {
             spritesWrite2x2();
             
             continue;
+        }
+        
+        if (baddyStates[index] == baddyStateWarmup) {
+            spritesWriteFirstOAMIndex = spritesBaddiesIndex + index * 4;
+            if((index >> 1) & 1) {
+                spritesWriteX = 144;
+                spritesWriteAttributes = baddySpriteFrames[15];
+            } else {
+                spritesWriteX = 16;
+                spritesWriteAttributes = baddySpriteFrames[14];
+            }
+            spritesWriteY = 44 + (index >> 1) * 16 + (index > 3 ? 16 : 0);
+            spritesWrite2x2();
         }
         
         if(baddyStateTimers[index] != 0) {
